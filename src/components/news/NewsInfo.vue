@@ -4,7 +4,7 @@
     <h3 class="title">{{ newsinfo.title }}</h3>
     <!-- 子标题 -->
     <p class="subtitle">
-      <span>发表时间：{{ newsinfo.add_time | dateFormat }}</span>
+      <span>发表时间：{{ newsinfo.time | dateFormat }}</span>
       <span>点击：{{ newsinfo.click }}次</span>
     </p>
 
@@ -35,12 +35,8 @@ export default {
   methods: {
     getNewsInfo() {
       // 获取新闻详情
-      this.$http.get("./newsInfo.json" + this.id).then(result => {
-        if (result.body.status === 0) {
-          this.newsinfo = result.body.message[0];
-        } else {
-          Toast("获取新闻失败！");
-        }
+      this.$http.get("./data/newsinfo.json").then(result => {
+          this.newsinfo = result.body;        
       });
     }
   },
@@ -51,7 +47,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="less">
 .newsinfo-container {
   padding: 0 4px;
   .title {

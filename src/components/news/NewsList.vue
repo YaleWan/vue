@@ -34,7 +34,7 @@ export default {
   methods: {
     getNewsList() {
       // 获取新闻列表
-      this.$http.get("./data/newsInfo.json").then(result => {
+      this.$http.get("./data/newsList.json").then(result => {
           this.newslist = result.body;
       });
     }
