@@ -20,8 +20,8 @@
                 </p>
                 <p>购买数量：<numbox class="numbox" @getCount='getSelectCount'></numbox></p>
                 <p>
-                <mt-button type="primary" size="small">立即购买</mt-button>
-                <mt-button type="danger" size="small">加入购物车</mt-button>       
+                <mt-button type="primary" size="small" >立即购买</mt-button>
+                <mt-button type="danger" size="small" @click="addToShopCar">加入购物车</mt-button>       
                 </p>
               </div>
             </div>
@@ -37,8 +37,8 @@
             </div>
           </div>
           <div class="mui-card-footer">
-            <mt-button type="primary" size="large" plain @click="goDesc(id)">图文介绍</mt-button>
-            <mt-button type="danger" size="large" plain @click="goComment(id)">商品评论</mt-button>
+            <mt-button type="primary" size="large" plain>图文介绍</mt-button>
+            <mt-button type="danger" size="large" plain>商品评论</mt-button>
           </div>
         </div>
         
@@ -52,6 +52,7 @@ import numbox from "../subcomponents/goodsInfo_numbox.vue";
 export default {
   data() {
     return {
+      id: this.$route.params.id, 
       bannerList: [],
       goodsinfo: {},
       SelectCount:1
@@ -66,11 +67,11 @@ export default {
       //获取轮播图信息
       this.$http.get("./data/goodsBanner.json").then(result => {
         this.bannerList = result.body;
-        console.log(this.bannerList);
       });
     },
     getGoodsInfo() {
       // 获取商品的信息
+      //./data/goodsInfo.json +  id 
       this.$http.get("./data/goodsInfo.json").then(result => {
         this.goodsinfo = result.body;
       });
@@ -79,6 +80,21 @@ export default {
       //接受子组件传来的数量值
         this.SelectCount=data;
         
+    },
+    addToShopCar(){
+      //加入购物车
+      console.log(this.id)
+      var goodsinfo = {
+        id:this.id,
+        count:this.SelectCount,
+        title:this.goodsinfo.title,
+        price:this.goodsinfo.sell_price,
+        selected:true
+
+      }
+
+      this.$store.commit("addToCar",goodsinfo)
+
     }
   },
   components: {
@@ -89,6 +105,7 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+
 .goodsinfo-container {
   .numbox{
     display: inline-block;
